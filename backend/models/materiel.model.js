@@ -1,197 +1,111 @@
-
 const sequelize = require('../utils/database');
-const {
-    DataTypes
-} = require('sequelize')
-const utilisateur = sequelize.define(
-    'utilisateurs',
+const { DataTypes } = require('sequelize');
 
+const materiel = sequelize.define(
+    'materiel',
     {
-
-        mat_util: {
-
-            type: DataTypes.INTEGER(11),
-
+        code_immo: {
+            type: DataTypes.INTEGER(250),
             allowNull: false,
-
-            defaultValue: null,
-
             primaryKey: true,
-
             autoIncrement: true,
-
             comment: null,
-
-            field: "mat_util"
-
+            field: "code_immo"
         },
-
-        nom: {
-
-            type: DataTypes.TEXT(),
-
+        num_serie: {
+            type: DataTypes.INTEGER(14),
             allowNull: false,
-
-            defaultValue: null,
-
             primaryKey: false,
-
             autoIncrement: false,
-
             comment: null,
-
-            field: "nom"
-
+            field: "num_serie"
         },
-
-
-
-        prenom: {
-
-            type: DataTypes.TEXT(),
-
+        code_seaal: {
+            type: DataTypes.STRING(30),
             allowNull: true,
-
             defaultValue: null,
-
             primaryKey: false,
-
             autoIncrement: false,
-
             comment: null,
-
-            field: "prenom"
-
+            field: "code_seaal"
         },
-
-        direction: {
-
-            type: DataTypes.TEXT(),
-
+        code_barr: {
+            type: DataTypes.INTEGER(25),
             allowNull: false,
-
             defaultValue: null,
-
             primaryKey: false,
-
             autoIncrement: false,
-
             comment: null,
-
-            field: "direction"
-
+            field: "code_barr"
         },
-
-        departement: {
-
+        marque: {
             type: DataTypes.STRING(50),
-
             allowNull: true,
-
             defaultValue: null,
-
             primaryKey: false,
-
             autoIncrement: false,
-
             comment: null,
-
-            field: "departement"
-
+            field: "marque"
         },
-
-        service: {
-
-            type: DataTypes.STRING(50),
-
-            allowNull: true,
-
+        annee_d_aquisition: {
+            type: DataTypes.DATE(),
+            allowNull: false,
             defaultValue: null,
-
             primaryKey: false,
-
             autoIncrement: false,
-
             comment: null,
-
-            field: "service"
-
+            field: "annee_d_aquisition"
         },
-        site: {
+        affecte: {
             type: DataTypes.STRING(100),
-            allowNull: true,
+            allowNull: false,
             defaultValue: null,
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "site"
+            field: "affecte"
         },
-        structure: {
+        etat: {
             type: DataTypes.INTEGER(20),
+            allowNull: false,
+            defaultValue: null,
+            primaryKey: false,
+            autoIncrement: false,
+            comment: null,
+            field: "etat"
+        },
+        date_d_inventaire: {
+            type: DataTypes.DATE(),
             allowNull: true,
             defaultValue: null,
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "structure"
+            field: "date_d_inventaire"
         },
-        wilaya: {
-            type: DataTypes.INTEGER(20),
-            allowNull: true,
+        code_reform: {
+            type: DataTypes.STRING(11),
+            allowNull: false,
             defaultValue: null,
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "wilaya"
+            field: "code_reform"
         },
-        bureau_util: {
-            type: DataTypes.INTEGER(30),
-            allowNull: true,
-            defaultValue: null,
-            primaryKey: false,
-            autoIncrement: false,
-            comment: null,
-            field: "bureau_util"
-        },
-        email: {
+        code_type: {
             type: DataTypes.STRING(250),
             allowNull: true,
             defaultValue: null,
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "email"
-        },
-        password: {
-            type: DataTypes.STRING(250),
-            allowNull: false,
-            defaultValue: null,
-            primaryKey: false,
-            autoIncrement: false,
-            comment: null,
-            field: "password"
-        },
-        username: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-            defaultValue: null,
-            primaryKey: false,
-            autoIncrement: false,
-            comment: null,
-            field: "password",
-            unique: true,
+            field: "code_type"
         }
-    }
-    , {
-
+    },
+    {
         freezeTableName: true,
-
         timestamps: false
-
     }
-
 );
 
-
-
-module.exports = utilisateur;
+module.exports = materiel;

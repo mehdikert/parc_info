@@ -21,7 +21,8 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 
 
 const Container = styled.div`
-height : 100vh;
+height: 100vh;
+width: max-content;
 & .item-content{
     display : flex ;
     align-items: center ; 

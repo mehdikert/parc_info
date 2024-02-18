@@ -1,24 +1,32 @@
 const express = require('express');
-const dotenv = require('dotenv');
-dotenv.config();
 const app = express();
 const cors = require('cors')
 const colors = require('colors')
-
-const userRouter = require('./Routes/user.route')
+const user_router = require('./Routes/user.route')
+const mat_router = require('./Routes/materiel.route')
+const auth_router = require('./Routes/auth.routes')
 const http = require("http")
 
+const dotenv = require('dotenv').config()
 
-app.use(cors())
+
+app.use(cors(
+    {
+        origin: "",
+        methods: ["POST , GET "],
+        credentials: true
+    }
+))
 app.use(express.json())
-app.use('/user', userRouter);
+app.use('/user', user_router);
+app.use('/mat', mat_router);
+app.use('/auth', auth_router)
 
 
-
-const port = 3005;
+const port = process.env.PORT;
 
 server = http.createServer(app)
 
-server.listen(port, () => {
+server.listen(port || 3005, () => {
     console.log(('server is running on port ' + port).bgGreen)
 })

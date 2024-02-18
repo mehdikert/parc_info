@@ -1,9 +1,9 @@
+import React from 'react'
 
-function Materiel() {
+function Materiels() {
     return (
-        <>
-        </>
+        <div>Materiels</div>
     )
 }
 
-export default Materiel
+export default Materiels

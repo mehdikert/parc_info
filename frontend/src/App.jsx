@@ -1,11 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import SideBar from './Components/SideBar';
 import styled from "styled-components"
-import UserCard from './Components/UserCard';
 import Crud_User from './Pages/Users/Crud.User';
 import axios from "axios"
+import Calendar from './Pages/Calendar/Calendar';
+import Profile from './Pages/Profile/Profile';
+import Materiels from './Pages/Materiels/Materiels';
+import Materiel from './Pages/Materiels/Materiel';
+import Login from './Pages/Login/Login';
+import Users from './Pages/Users/Users';
+import Crud_materiel from './Pages/Materiels/Crud.materiel';
+import User from './Pages/Users/User';
+import Register from './Pages/Register/Register';
+import Home from './Pages/Home/Home';
 
 
 const Container = styled.div`
@@ -13,24 +21,25 @@ width : 100% ;
 `
 
 const Cont = styled.div`
-display : flex ;
+
 `
 
-function handleClick() {
-  console.log('hello ')
-  axios.get('http://localhost:3005/user/get')
-}
 
 function App() {
-
   return (
-    <Cont>
-      <SideBar />
-      <button onClick={handleClick}>test</button>
-      <Container className='app-container'>
-        <Crud_User />
-      </Container>
-    </Cont >
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
+      <Route path='/calendar' element={<Calendar />} />
+      <Route path='/materiels' element={<Materiels />} />
+      <Route path='/materiel/:id' element={<Materiel />} />
+      <Route path='/materiel/crud' element={<Crud_materiel />} />
+      <Route path='/profile/:id' element={<Profile />} />
+      <Route path='/users' element={<Users />} />
+      <Route path='/user/:id' element={<User />} />
+      <Route path='/user/crud' element={<Crud_User />} />
+    </Routes >
   )
 }
 
