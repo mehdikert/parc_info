@@ -12,8 +12,8 @@ const dotenv = require('dotenv').config()
 
 app.use(cors(
     {
-        origin: "",
-        methods: ["POST , GET "],
+        origin: "http://localhost:5173",
+        methods: ["POST , GET"],
         credentials: true
     }
 ))

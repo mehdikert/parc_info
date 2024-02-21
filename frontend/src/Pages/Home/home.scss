@@ -1,0 +1,63 @@
+.logo-login {
+    width: 100px;
+    box-shadow: 5px 0px 5px black;
+}
+
+.logo-login-container {
+    background-color: transparent;
+    width: max-content;
+    height: max-content;
+    position: relative;
+    animation: rot 1.5s infinite;
+
+    &:hover {
+        animation: none;
+    }
+}
+
+.blob-wallpaper {
+    position: absolute;
+}
+
+.blob-wallpaper:nth-child(2) {
+    width: 50%;
+    top: -400px;
+}
+
+.blob-wallpaper:nth-child(3) {
+    width: 40%;
+    top: 5%;
+    right: .5%;
+}
+
+.icon-gif {
+    width: 25px;
+    height: 25px;
+}
+
+/*
+.icon-gif:nth-child(1) {
+    background: url(../../assets/loginIcon.png) center no-repeat;
+    background-size: cover;
+}
+
+.icon-gif:nth-child(2) {
+    background: url(../../assets/loginIcon.png) center no-repeat;
+    background-size: cover;
+}
+
+
+.btn:nth-child(1) {
+    & .icon-gif {
+        background: url(../../assets/loginIcon.gif) center no-repeat;
+        background-size: cover;
+    }
+
+
+}
+*/
+@keyframes rot {
+    from {
+        transform: rotatey(360deg);
+    }
+}

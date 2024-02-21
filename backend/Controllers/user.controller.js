@@ -5,20 +5,18 @@ const seq = require('sequelize')
 
 
 // post user
-const addUser = (req, res) => {
-    const data = req.body
-    bcrypt.hash(req.body.password, 10).then((hash) => {
-        data.password = hash
-        try {
-            const newuser = utilisateurs.create(data)
-            res.status(200).json({ message: "New user added" });
-        } catch (error) {
-            res.status(404).send({
-                success: false,
-                message: error.message
-            })
-        }
-    })
+const addUser = async (req, res) => {
+    const data = req.body;
+    try {
+        const hash = await bcrypt.hash(data.password, 10);
+        data.password = hash;
+        const newUser = await utilisateurs.create(data)
+        newUser.password = hash;
+        res.status(200).json({ newUser });
+    } catch (error) {
+        console.error("Error adding user:", error);
+        res.status(500).send({ success: false, error: error.message });
+    }
 
 }
 

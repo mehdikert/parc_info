@@ -2,7 +2,7 @@ import React from 'react'
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import './navbar.css'
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -30,7 +30,7 @@ width : 100px ;
 `
 
 function Navb(expand) {
-
+    const navigate = useNavigate()
     return (
         <Navbar expand="lg" className="bg-body-dark" style={{ background: "#232B26", width: "100%" }}>
             <Container style={{ gap: '50px' }}>
@@ -70,18 +70,22 @@ function Navb(expand) {
                         <NavDropdown title={
                             <ProfilePicture src='' />
                         } id="basic-nav-dropdown-two" >
-                            <NavDropdown.Item href="/#">
+                            <NavDropdown.Item >
                                 <Link to={"/home"}>Show Profile</Link>
                             </NavDropdown.Item>
-                            <NavDropdown.Item href="/#">
+                            <NavDropdown.Item >
                                 <Link to={"/home"}>Edit Profile</Link>
                             </NavDropdown.Item>
-                            <NavDropdown.Item href="/#">
+                            <NavDropdown.Item href="/">
                                 <Link to={"/home"}>Settings</Link>
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/#">
-                                <Link to={"/home"}>LogOut</Link>
+                            <NavDropdown.Item >
+                                <Link to={"/login"} onClick={(e) => {
+                                    e.preventDefault();
+                                    localStorage.removeItem('token');
+                                    navigate('/login')
+                                }}>LogOut</Link>
                             </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>

@@ -1,0 +1,7 @@
+.input-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 10px;
+    column-gap: 50px;
+    align-items: center;
+}

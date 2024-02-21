@@ -19,6 +19,7 @@ const addMat = (req, res) => {
 
 
 const getMats = async (req, res) => {
+
     try {
         const data = await materiel.findAll();
         if (!data) {
