@@ -14,6 +14,7 @@
     color: red;
     overflow: hidden;
 
+    /*
     &::before {
         content: "";
         position: absolute;
@@ -27,10 +28,11 @@
         border: solid 1px red;
         border-radius: 550px;
     }
-
+*/
     &:hover {
         color: white;
-        transition: 1s;
+        transition: .2s;
+        background: red;
 
         &::before {
             top: 0;

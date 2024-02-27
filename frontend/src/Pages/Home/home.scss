@@ -30,34 +30,32 @@
     right: .5%;
 }
 
-.icon-gif {
-    width: 25px;
-    height: 25px;
-}
-
-/*
-.icon-gif:nth-child(1) {
-    background: url(../../assets/loginIcon.png) center no-repeat;
-    background-size: cover;
-}
-
-.icon-gif:nth-child(2) {
-    background: url(../../assets/loginIcon.png) center no-repeat;
-    background-size: cover;
-}
-
-
-.btn:nth-child(1) {
-    & .icon-gif {
-        background: url(../../assets/loginIcon.gif) center no-repeat;
-        background-size: cover;
-    }
-
-
-}
-*/
 @keyframes rot {
     from {
         transform: rotatey(360deg);
     }
+}
+
+
+.link-home {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    gap: 20px;
+    text-decoration: none;
+    background-color: white;
+    color: black;
+    width: 250px;
+    justify-content: center;
+    text-transform: uppercase;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.link-home:hover {
+    transform: scale(1.05);
+}
+
+.link-home:active {
+    color: black;
 }

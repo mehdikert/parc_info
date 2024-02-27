@@ -5,7 +5,7 @@ import styled from "styled-components"
 import Button from 'react-bootstrap/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios"
-
+import { toast } from "react-toastify"
 function Register() {
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
@@ -23,7 +23,6 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('hi ');
         try {
             const res = await axios.post("http://localhost:3005/auth/register/", {
                 nom: firstname,
@@ -40,13 +39,14 @@ function Register() {
                 password: password
             })
             if (res.status === 200) {
-                alert('register with success')
+                toast.success('register with success')
                 navigate('/login');
             } else {
-                alert('eror')
+                toast.error('Error when trying to register')
             }
 
         } catch (error) {
+            toast.error(error.data.message)
             console.log(error);
         }
     }
@@ -194,7 +194,7 @@ text-align: center;
 `
 const Logo = styled.img`
 position : absolute ;
-top : -5%;
+top : -2.5%;
 left : 5% ;
 `
 

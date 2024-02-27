@@ -1,7 +1,8 @@
-import * as React from 'react';
 import styled from "styled-components"
 import Navbar from "../../Components/Navbar"
-
+import React, { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 const Container = styled.div`
 & .calendar{
     border : solid 1.5px ; 
@@ -17,8 +18,14 @@ const Container = styled.div`
 `
 
 function Calendar() {
-
-
+    const navigate = useNavigate()
+    React.useEffect(() => {
+        if (localStorage.getItem('token') === "" || !localStorage.getItem('token')) {
+            navigate('/')
+            toast.error("Expired session")
+        }
+        return () => { }
+    }, [])
 
 
     return (

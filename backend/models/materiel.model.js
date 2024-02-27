@@ -4,39 +4,22 @@ const { DataTypes } = require('sequelize');
 const materiel = sequelize.define(
     'materiel',
     {
-        code_immo: {
-            type: DataTypes.INTEGER(250),
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
-            comment: null,
-            field: "code_immo"
-        },
+
         num_serie: {
             type: DataTypes.INTEGER(14),
             allowNull: false,
-            primaryKey: false,
+            primaryKey: true,
             autoIncrement: false,
             comment: null,
             field: "num_serie"
         },
-        code_seaal: {
-            type: DataTypes.STRING(30),
-            allowNull: true,
-            defaultValue: null,
-            primaryKey: false,
-            autoIncrement: false,
-            comment: null,
-            field: "code_seaal"
-        },
-        code_barr: {
-            type: DataTypes.INTEGER(25),
+        code_immo: {
+            type: DataTypes.INTEGER(250),
             allowNull: false,
-            defaultValue: null,
             primaryKey: false,
-            autoIncrement: false,
+            autoIncrement: true,
             comment: null,
-            field: "code_barr"
+            field: "code_immo"
         },
         marque: {
             type: DataTypes.STRING(50),
@@ -47,26 +30,26 @@ const materiel = sequelize.define(
             comment: null,
             field: "marque"
         },
-        annee_d_aquisition: {
+        date_aquis: {
             type: DataTypes.DATE(),
             allowNull: false,
             defaultValue: null,
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "annee_d_aquisition"
+            field: "date_aquis"
         },
-        affecte: {
-            type: DataTypes.STRING(100),
+        date_affect: {
+            type: DataTypes.DATE(),
             allowNull: false,
             defaultValue: null,
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "affecte"
+            field: "date_affect"
         },
         etat: {
-            type: DataTypes.INTEGER(20),
+            type: DataTypes.INTEGER(10),
             allowNull: false,
             defaultValue: null,
             primaryKey: false,
@@ -74,32 +57,23 @@ const materiel = sequelize.define(
             comment: null,
             field: "etat"
         },
-        date_d_inventaire: {
-            type: DataTypes.DATE(),
+        id_modele: {
+            type: DataTypes.INTEGER(11),
             allowNull: true,
             defaultValue: null,
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "date_d_inventaire"
+            field: "id_modele"
         },
-        code_reform: {
-            type: DataTypes.STRING(11),
+        matricule: {
+            type: DataTypes.INTEGER(11),
             allowNull: false,
             defaultValue: null,
             primaryKey: false,
             autoIncrement: false,
             comment: null,
             field: "code_reform"
-        },
-        code_type: {
-            type: DataTypes.STRING(250),
-            allowNull: true,
-            defaultValue: null,
-            primaryKey: false,
-            autoIncrement: false,
-            comment: null,
-            field: "code_type"
         }
     },
     {

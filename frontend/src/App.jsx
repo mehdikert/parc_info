@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import styled from "styled-components"
-import Crud_User from './Pages/Users/Crud.User';
+import Crud_User from './Pages/Users/Crud_Add.User';
 import Calendar from './Pages/Calendar/Calendar';
 import Profile from './Pages/Profile/Profile';
 import Materiels from './Pages/Materiels/Materiels';
@@ -15,6 +15,11 @@ import Register from './Pages/Register/Register';
 import Home from './Pages/Home/Home';
 import { useNavigate, Navigate } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Dashboard from './Pages/Dashboard/Dashboard';
+import Auth from './Auth';
+
 
 const Container = styled.div`
 width : 100% ;
@@ -34,24 +39,39 @@ function App() {
       setLogin(true)
     } else {
       setLogin(false)
-      navigate('/login')
+      navigate('/')
     }
     console.log(login);
+    return () => { }
   }, [login])
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      <Route path='/calendar' element={<Calendar />} />
-      <Route path='/materiels' element={<Materiels />} />
-      <Route path='/materiel/:id' element={<Materiel />} />
-      <Route path='/materiel/crud' element={<Crud_materiel />} />
-      <Route path='/profile/:id' element={<Profile />} />
-      <Route path='/users' element={<Users />} />
-      <Route path='/user/:id' element={<User />} />
-      <Route path='/user/crud' element={<Crud_User />} />
-    </Routes >
+    <>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/calendar' element={<Auth><Calendar /></Auth>} />
+        <Route path='/products' element={<Auth><Materiels /></Auth>} />
+        <Route path='/product/:id' element={<Auth><Materiel /></Auth>} />
+        <Route path='/product/crud' element={<Auth><Crud_materiel /></Auth>} />
+        <Route path='/profile/:id' element={<Auth><Profile /></Auth>} />
+        <Route path='/users' element={<Auth><Users /></Auth>} />
+        <Route path='/user/:id' element={<Auth><User /></Auth>} />
+        <Route path='/user/crud' element={<Auth><Crud_User /></Auth>} />
+        <Route path='/user/dashboard' element={<Auth> <Dashboard /></Auth>} />
+      </Routes >
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="dark"
+        transition:Bounce
+      />
+    </>
   )
 }
 

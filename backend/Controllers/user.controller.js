@@ -17,7 +17,6 @@ const addUser = async (req, res) => {
         console.error("Error adding user:", error);
         res.status(500).send({ success: false, error: error.message });
     }
-
 }
 
 // get users  
@@ -54,6 +53,38 @@ const getUser = async (req, res) => {
     }
 }
 
+// filtred user 
+/*
+const filtred_user = async (req, res, key) => {
+    const key = req.body.filterKey
+    const { nom, prenom, direction, department, site, structure, wilaya, email, username } = req.body
+    try {
+        const filter = await utilisateurs.findAll({
+            where: {
+                [seq.or]:
+                    [
+                        { nom: { [seq.like]: `%${key}%` } },
+                        { prenom: { [seq.like]: `%${key}%` } },
+                        { direction: { [seq.like]: `%${key}%` } },
+                        { department: { [seq.like]: `%${key}%` } },
+                        { site: { [seq.like]: `%${key}%` } },
+                        { structure: { [seq.like]: `%${key}%` } },
+                        { wilaya: { [seq.like]: `%${key}%` } },
+                        { email: { [seq.like]: `%${key}%` } },
+                        { username: { [seq.like]: `%${key}%` } }
+                    ]
+            }
+        })
+        res.status(200).json(filter)
+    } catch (error) {
+        res.status(404).send({
+            success: false,
+            message: error.message
+        })
+    }
+}
+*/
+
 // delete user
 const deleteUser = async (req, res) => {
     const index = req.params.id
@@ -67,7 +98,7 @@ const deleteUser = async (req, res) => {
             res.status(200).json({ message: "User doesn't exist" })
         }
         else {
-            const deleteUser = utilisateurs.destroy({
+            const deleteUser = await utilisateurs.destroy({
                 where: {
                     mat_util: index
                 }
@@ -84,6 +115,40 @@ const deleteUser = async (req, res) => {
     }
 }
 
+
+const deleteUsers = async (req, res) => {
+    const indexes = req.body.indexes; // Assurez-vous que req.body.indexes contient un tableau d'index d'utilisateurs à supprimer
+    try {
+        const deletedUsers = await Promise.all(indexes.map(async (index) => {
+            const user = await utilisateurs.findOne({
+                where: {
+                    mat_util: index
+                }
+            });
+            if (!user) {
+                return { index, success: false, message: "User doesn't exist" };
+            } else {
+                const deletedUser = await utilisateurs.destroy({
+                    where: {
+                        mat_util: index
+                    }
+                });
+                if (deletedUser) {
+                    return { index, success: true, message: 'User deleted' };
+                } else {
+                    return { index, success: false, message: 'Failed to delete user' };
+                }
+            }
+        }));
+
+        res.status(200).json(deletedUsers);
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: error.message
+        });
+    }
+};
 // update user   
 const updateUser = async (req, res) => {
     const id = req.params.id
@@ -121,4 +186,4 @@ const updateUser = async (req, res) => {
     }
 }
 
-module.exports = { addUser, getUsers, getUser, deleteUser, updateUser }
+module.exports = { addUser, getUsers, getUser, deleteUser, updateUser, deleteUsers }

@@ -5,93 +5,78 @@ import styled from 'styled-components'
 import Navbar from '../../Components/Navbar';
 
 const Container = styled.div`
-display : flex ; 
-flex-direction: column;
-width: 100%;
-gap : 50px ;
 & Form {
-    width: 100%;
-    display : flex;
-    flex-direction : column ;
-    align-items : center ;
-    gap : 50px ;
-    & h1 {
-        text-transform: uppercase;
-        font-weight: 700;
-        font-size : 3.5rem ;
-        letter-spacing: 1.5px;
-        word-spacing: 5px;
+    margin : 75px 25vw ;
+    display : flex ; 
+    flex-direction: column;
+    gap :50px ;
+    & > div {
+        display : grid ;
+        grid-template-columns: repeat(2,1fr);
+        column-gap: 50px;
     }
-    & > div{
-        display: grid ;
-        grid-template-columns: repeat(2 , 1fr);
-        column-gap: 50px ;
-        row-gap : 10px ;
-        align-items: center ;
-    }
-& .mb-3 {
-    width : 500px ;
 }
-}
+
 `
 
-function Crud_materiel() {
+function Crud_Product() {
     const [add, setAdd] = useState(true);
     const [update, setUpdate] = useState(false);
+
     return (
         <Container>
             <Navbar />
             <Form>
-                <h1>{add && !update ? 'Add' : 'Update'} User</h1>
+                <h1>{add && !update ? 'Add' : 'Update'} Product</h1>
                 <div>
                     <Form.Group className="mb-3" >
-                        <Form.Label>Matricule utilisateur</Form.Label>
+                        <Form.Label>Code immo</Form.Label>
                         <Form.Control type="number" control placeholder="Code_immo ( Automatique )" disabled />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Direction</Form.Label>
-                        <Form.Control type="number" placeholder="numero de serie" />
+                        <Form.Label>Numero de serie</Form.Label>
+                        <Form.Control type="number" max={99999999999999} min={1} placeholder="numero de serie" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Nom</Form.Label>
-                        <Form.Control type="number" maxLength={30} placeholder="nom" />
+                        <Form.Label>Code SEAAL</Form.Label>
+                        <Form.Control type="number" maxLength={30} placeholder="code SEAAL" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Prenom</Form.Label>
-                        <Form.Control type="number" maxLength={10} placeholder="prenom" />
+                        <Form.Label>Code Barre</Form.Label>
+                        <Form.Control type="number" maxLength={10} placeholder="code barre" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Departement</Form.Label>
-                        <Form.Control type="text" placeholder="departement" />
+                        <Form.Label>Date d'Inventaire</Form.Label>
+                        <Form.Control type="date" placeholder="date d'inventaire" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>service</Form.Label>
-                        <Form.Control type="text" placeholder="année d'aquisition" />
+                        <Form.Label>Année d'Aquisition</Form.Label>
+                        <Form.Control type="date" placeholder="année d'aquisition" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Site</Form.Label>
+                        <Form.Label>Affecte</Form.Label>
                         <Form.Control type="text" placeholder="Affecte" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Structure</Form.Label>
+                        <Form.Label>Etat</Form.Label>
                         <Form.Control type="text" placeholder="Etat" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Wilaya</Form.Label>
+                        <Form.Label>Code reforme</Form.Label>
                         <Form.Control type="text" placeholder="code reforme" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Bureau utilisateur</Form.Label>
+                        <Form.Label>Code Type</Form.Label>
                         <Form.Control type="text" placeholder="code type" />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Role</Form.Label>
+                        <Form.Label>Marque</Form.Label>
                         <Form.Select aria-label="Floating label select example">
-                            <option disabled selected>--</option>
-                            <option value="1">Utilisateur</option>
-                            <option value="1">Admin</option>
-                            <option value="2">Super Admin</option>
+                            <option disabled>Open this select menu</option>
+                            <option value="1">Hp</option>
+                            <option value="2">Dell</option>
+                            <option value="3">Asus</option>
                         </Form.Select>
                     </Form.Group>
                     <Button variant="outline-secondary" type="button">
@@ -106,4 +91,4 @@ function Crud_materiel() {
     )
 }
 
-export default Crud_materiel
+export default Crud_Product

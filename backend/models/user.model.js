@@ -178,7 +178,7 @@ const utilisateur = sequelize.define(
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "password"
+            field: "username"
         }
     }
     , {

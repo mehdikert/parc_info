@@ -13,12 +13,12 @@ const dotenv = require('dotenv').config()
 app.use(cors(
     {
         origin: "http://localhost:5173",
-        methods: ["POST , GET"],
+        methods: ["POST , GET , DELETE , PUT"],
         credentials: true
     }
 ))
 app.use(express.json())
-app.use('/user', user_router);
+app.use('/users', user_router);
 app.use('/mat', mat_router);
 app.use('/auth', auth_router)
 

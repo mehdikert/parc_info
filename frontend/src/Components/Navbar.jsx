@@ -9,25 +9,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import styled from "styled-components"
 import Badge from '@mui/material/Badge';
 import HomeIcon from '@mui/icons-material/Home';
-
-const Profile = styled.div`
-width : 50px ; 
-height : 50px ;
-background : url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.marismith.com%2Fwp-content%2Fuploads%2F2014%2F07%2Ffacebook-profile-blank-face.jpeg&f=1&nofb=1&ipt=8244e2c8b41f6e1191f86361bd22becc29bd8309a34e9ce5a2fec7152f7ed761&ipo=images) center no-repeat ; 
-background-size: cover ;
-border-radius: 100px ;
-margin : 0px 10px ;
-`
-const ProfilePicture = styled.img``
-const Connexion = styled.div`
-display : flex ;
-align-items: center ; 
-gap : 5px ;
-width: max-content;
-`
-const ConButton = styled.button`
-width : 100px ;
-`
+import { toast } from "react-toastify"
+import TemporaryDrawer from './Drawer';
 
 function Navb(expand) {
     const navigate = useNavigate()
@@ -35,8 +18,7 @@ function Navb(expand) {
         <Navbar expand="lg" className="bg-body-dark" style={{ background: "#232B26", width: "100%" }}>
             <Container style={{ gap: '50px' }}>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Link to={'/'}><HomeIcon color='#fff' /></Link>
-
+                <TemporaryDrawer />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <NavDropdown title={
@@ -84,6 +66,7 @@ function Navb(expand) {
                                 <Link to={"/login"} onClick={(e) => {
                                     e.preventDefault();
                                     localStorage.removeItem('token');
+                                    toast.success("Logout with success")
                                     navigate('/login')
                                 }}>LogOut</Link>
                             </NavDropdown.Item>
@@ -95,5 +78,28 @@ function Navb(expand) {
         </Navbar >
     )
 }
+
+
+
+const Profile = styled.div`
+width : 50px ; 
+height : 50px ;
+background : url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.marismith.com%2Fwp-content%2Fuploads%2F2014%2F07%2Ffacebook-profile-blank-face.jpeg&f=1&nofb=1&ipt=8244e2c8b41f6e1191f86361bd22becc29bd8309a34e9ce5a2fec7152f7ed761&ipo=images) center no-repeat ; 
+background-size: cover ;
+border-radius: 100px ;
+margin : 0px 10px ;
+`
+const ProfilePicture = styled.img``
+const Connexion = styled.div`
+display : flex ;
+align-items: center ; 
+gap : 5px ;
+width: max-content;
+`
+const ConButton = styled.button`
+width : 100px ;
+`
+
+
 
 export default Navb

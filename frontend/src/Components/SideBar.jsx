@@ -22,7 +22,7 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 
 const Container = styled.div`
 height: 100vh;
-width: max-content;
+width: max-content;  
 & .item-content{
     display : flex ;
     align-items: center ; 
@@ -64,7 +64,7 @@ function SideBar({ position }) {
                         <Link exact to="/" activeClassName="activeClicked">
                             <CDBSidebarMenuItem ><GridViewIcon />Dashboard</CDBSidebarMenuItem>
                         </Link>
-                        <Link exact to="/tables" activeClassName="activeClicked">
+                        <Link exact to="/materiels" activeClassName="activeClicked">
                             <CDBSidebarMenuItem><DevicesSharpIcon />Products</CDBSidebarMenuItem>
                         </Link>
                         <Link exact to="/profile" activeClassName="activeClicked">

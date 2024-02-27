@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './login.scss'
 import Form from 'react-bootstrap/Form';
 import styled from "styled-components"
 import Button from 'react-bootstrap/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios"
+import { toast } from 'react-toastify';
+
+
 
 function Login() {
     const [username, setUsername] = useState('')
@@ -20,13 +23,20 @@ function Login() {
             if (res.status = 200) {
                 const token = res.data.token
                 localStorage.setItem('token', token)
-                navigate('/calendar');
+                toast.success("Login with success")
+                navigate('/users');
+                console.log(res);
             }
 
         } catch (error) {
             console.log(error.response.data.message);
+            toast.error(error.response.data.message)
         }
     }
+    useEffect(() => {
+        localStorage.removeItem('token')
+        return () => { }
+    }, [])
 
     return (
         <Container>
@@ -60,6 +70,7 @@ function Login() {
                     </ContainerForm>
                 </Wrapper>
             </div>
+
         </Container>
     )
 }
