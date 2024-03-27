@@ -20,20 +20,26 @@ function Login() {
                 username: username,
                 password: password
             })
-            if (res.status = 200) {
+            if (res.status === 200) {
                 const token = res.data.token
                 localStorage.setItem('token', token)
                 toast.success("Login with success")
-                navigate('/users');
+                navigate('/dashboard');
+                console.log(res);
+            } else {
                 console.log(res);
             }
 
         } catch (error) {
-            console.log(error.response.data.message);
-            toast.error(error.response.data.message)
+            console.log(error.message);
+            //
+            toast.error("ERROR : " + error.message)
+            console.log(error);
         }
     }
+
     useEffect(() => {
+
         localStorage.removeItem('token')
         return () => { }
     }, [])

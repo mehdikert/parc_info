@@ -1,16 +1,16 @@
 const materiel = require('../models/materiel.model')
-const bcrypt = require('bcrypt')
+
 const sequelize = require('../utils/database')
 const seq = require('sequelize')
 
 
-const addMat = (req, res) => {
+const addMat = async (req, res) => {
     const data = req.body
     try {
-        const newuser = materiel.create(data)
+        const newMat = await materiel.create(data)
         res.status(200).json({ message: "New materiel added" });
     } catch (error) {
-        res.status(404).send({
+        res.status(400).send({
             success: false,
             message: error.message
         })
@@ -23,7 +23,7 @@ const getMats = async (req, res) => {
     try {
         const data = await materiel.findAll();
         if (!data) {
-            res.status(200).json({ message: "materiel not found" })
+            return res.status(400).json({ message: "materiel not found" })
         }
         res.status(200).json(data);
     } catch (error) {
@@ -31,6 +31,7 @@ const getMats = async (req, res) => {
             success: false,
             message: error.message
         })
+        console.log(error);
     }
 }
 
@@ -39,7 +40,7 @@ const getMat = async (req, res) => {
     try {
         const data = await materiel.findOne({
             where: {
-                code_immo: id
+                num_serie: id
             }
         });
         if (!data) {
@@ -54,33 +55,43 @@ const getMat = async (req, res) => {
     }
 }
 
-const deleteMat = async (req, res) => {
-    const id = req.params.id;
+
+
+const deleteMats = async (req, res) => {
+    const indexes = req.body.indexes; // Assurez-vous que req.body.indexes contient un tableau d'index d'utilisateurs à supprimer
     try {
-        const mat = await materiel.findOne({
-            where: {
-                code_immo: id
+        const deletedMateriels = await Promise.all(indexes.map(async (index) => {
+            const mat = await materiel.findOne({
+                where: {
+                    num_serie: index
+                }
+            });
+            if (!mat) {
+                return { index, success: false, message: `Materiel ${index} not found` };
+            } else {
+                const deletedUser = await materiel.destroy({
+                    where: {
+                        num_serie: index
+                    }
+                });
+                if (deletedUser) {
+                    return { index, success: true, message: 'Materiel deleted' };
+                } else {
+                    return { index, success: false, message: 'Failed to delete materiel' };
+                }
             }
-        });
-        if (!mat) {
-            return res.status(200).json({ message: "Materiel doesn't exist" })
-        }
-        const deleteMateriel = materiel.destroy({
-            where: {
-                code_immo: id
-            }
-        })
-        if (deleteMateriel) {
-            res.status(200).json({ message: 'Materiel deleted' })
-        }
+        }));
+
+        // Envoie de la réponse après avoir supprimé tous les matériels
+        res.status(200).json(deletedMateriels);
+
     } catch (error) {
-        res.status(404).send({
+        res.status(500).send({
             success: false,
             message: error.message
-        })
+        });
     }
-}
-
+};
 
 const updateMat = async (req, res) => {
     const id = req.params.id
@@ -93,7 +104,7 @@ const updateMat = async (req, res) => {
 
         await materiel.update(data, {
             where: {
-                code_immo: id
+                num_serie: id
             }
         });
         res.status(200).json({ message: 'user updated' })
@@ -106,4 +117,4 @@ const updateMat = async (req, res) => {
 }
 
 
-module.exports = { addMat, getMats, getMat, deleteMat, updateMat }
+module.exports = { addMat, getMats, getMat, deleteMats, updateMat }

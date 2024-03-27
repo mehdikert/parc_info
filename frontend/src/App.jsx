@@ -19,6 +19,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import Auth from './Auth';
+import Fournisseur from './Pages/Fournisseurs/Fournisseur';
+import Fournisseurs from './Pages/Fournisseurs/Fournisseurs';
+import Crud from './Pages/Crud/Crud';
 
 
 const Container = styled.div`
@@ -33,33 +36,39 @@ function App() {
   const [login, setLogin] = useState(false);
   const navigate = useNavigate()
   useEffect(() => {
-    console.log('localStorage.getItem()', localStorage.getItem('token'),)
-    console.log(localStorage.getItem('token') !== null);
-    if (localStorage.getItem('token') !== null) {
+    if (localStorage.getItem('token')) {
       setLogin(true)
     } else {
       setLogin(false)
       navigate('/')
+
     }
     console.log(login);
     return () => { }
   }, [login])
   return (
     <>
+
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
+        <Route path={login === false ? '/login' : '/'} element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/calendar' element={<Auth><Calendar /></Auth>} />
-        <Route path='/products' element={<Auth><Materiels /></Auth>} />
-        <Route path='/product/:id' element={<Auth><Materiel /></Auth>} />
-        <Route path='/product/crud' element={<Auth><Crud_materiel /></Auth>} />
+        <Route path='/materiels' element={<Auth><Materiels /></Auth>} />
+        <Route path='/materiels/:id' element={<Auth><Materiel /></Auth>} />
+        <Route path='/materiels/crud' element={<Auth><Crud_materiel /></Auth>} />
         <Route path='/profile/:id' element={<Auth><Profile /></Auth>} />
         <Route path='/users' element={<Auth><Users /></Auth>} />
-        <Route path='/user/:id' element={<Auth><User /></Auth>} />
-        <Route path='/user/crud' element={<Auth><Crud_User /></Auth>} />
-        <Route path='/user/dashboard' element={<Auth> <Dashboard /></Auth>} />
+        <Route path='/users/:id' element={<Auth><User /></Auth>} />
+        <Route path='/users/crud' element={<Auth><Crud_User /></Auth>} />
+        <Route path='/fournisseurs' element={<Auth><Fournisseurs /> </Auth>} />
+        <Route path='/fournisseurs/:id' element={<Auth><Fournisseur /></Auth>} />
+        <Route path='/fournisseurs/crud' element={<Auth><Crud_User /></Auth>} />
+        <Route path='/dashboard' element={<Auth> <Dashboard /></Auth>} />
+        <Route path='/crud' element={<Auth> <Crud path="users" /></Auth>} />
+
       </Routes >
+
       <ToastContainer
         position="top-right"
         autoClose={2000}

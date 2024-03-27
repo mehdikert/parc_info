@@ -1,105 +1,202 @@
-import React from 'react'
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import './navbar.css'
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import styled from "styled-components"
-import Badge from '@mui/material/Badge';
-import HomeIcon from '@mui/icons-material/Home';
-import { toast } from "react-toastify"
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
 import TemporaryDrawer from './Drawer';
+import waveIcon from '../assets/wave_icon.png'
+import styled from "styled-components"
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge from '@mui/material/Badge';
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
-function Navb(expand) {
-    const navigate = useNavigate()
+const pages = ['Products', 'Pricing', 'Blog'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+function Navbar() {
+    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const navigate = useNavigate('')
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
     return (
-        <Navbar expand="lg" className="bg-body-dark" style={{ background: "#232B26", width: "100%" }}>
-            <Container style={{ gap: '50px' }}>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <TemporaryDrawer />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <NavDropdown title={
-                            <Badge badgeContent={4} color="primary"
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left',
-                                }}
-                            >
-                                <NotificationsIcon className='notif-icon' />
-                            </Badge>
-                        } id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                </Navbar.Collapse>
+        <AppBar position="static" style={{ backgroundColor: "#2c2b2b" }} >
+            <Container maxWidth="xl">
+                <Toolbar disableGutters>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="a"
+                        href="#app-bar-with-responsive-menu"
+                        sx={{
+                            mr: 2,
+                            display: { xs: 'none', md: 'flex' },
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        SEAAL
+                    </Typography>
 
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Profile>
-                        <ProfilePicture src='' />
-                    </Profile>
-                    <Nav className="me-auto">
-                        <NavDropdown title={
-                            <ProfilePicture src='' />
-                        } id="basic-nav-dropdown-two" >
-                            <NavDropdown.Item >
-                                <Link to={"/home"}>Show Profile</Link>
-                            </NavDropdown.Item>
-                            <NavDropdown.Item >
-                                <Link to={"/home"}>Edit Profile</Link>
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="/">
-                                <Link to={"/home"}>Settings</Link>
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item >
-                                <Link to={"/login"} onClick={(e) => {
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleOpenNavMenu}
+                            color="inherit"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElNav}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            open={Boolean(anchorElNav)}
+                            onClose={handleCloseNavMenu}
+                            sx={{
+                                display: { xs: 'block', md: 'none' },
+                            }}
+                        >
+                            {pages.map((page) => (
+                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                    <Typography textAlign="center">{page}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+
+                    <Typography
+                        variant="h5"
+                        noWrap
+                        component="a"
+                        href="#app-bar-with-responsive-menu"
+                        sx={{
+                            mr: 2,
+                            display: { xs: 'flex', md: 'none' },
+                            flexGrow: 1,
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        SEAAL
+                    </Typography>
+
+                    <Button>
+                        <TemporaryDrawer />
+                    </Button>
+
+                    <Button>
+                        <Badge badgeContent={4} color="error"
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                        >
+                            <NotificationsIcon className='notif-icon' />
+                        </Badge>
+                    </Button>
+
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        { /* pages.map((page) => (
+                            <Button
+                                key={page}
+                                onClick={handleCloseNavMenu}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                {page}
+                            </Button>
+                        ))
+                        */}
+                    </Box>
+                    <Box Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="Open settings">
+                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px' }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            <MenuItem>
+                                <Typography>Profile</Typography>
+                            </MenuItem>
+                            <MenuItem>
+                                <Typography>Settings</Typography>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link onClick={(e) => {
                                     e.preventDefault();
                                     localStorage.removeItem('token');
                                     toast.success("Logout with success")
                                     navigate('/login')
-                                }}>LogOut</Link>
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                </Navbar.Collapse>
-
+                                }
+                                } style={{ color: "black", textDecoration: "none" }} >
+                                    <Typography>
+                                        Logout
+                                    </Typography>
+                                </Link>
+                            </MenuItem>
+                        </Menu>
+                    </Box>
+                </Toolbar>
             </Container>
-        </Navbar >
-    )
+        </AppBar >
+    );
 }
 
 
 
-const Profile = styled.div`
-width : 50px ; 
-height : 50px ;
-background : url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.marismith.com%2Fwp-content%2Fuploads%2F2014%2F07%2Ffacebook-profile-blank-face.jpeg&f=1&nofb=1&ipt=8244e2c8b41f6e1191f86361bd22becc29bd8309a34e9ce5a2fec7152f7ed761&ipo=images) center no-repeat ; 
-background-size: cover ;
-border-radius: 100px ;
-margin : 0px 10px ;
-`
-const ProfilePicture = styled.img``
-const Connexion = styled.div`
-display : flex ;
-align-items: center ; 
-gap : 5px ;
-width: max-content;
-`
-const ConButton = styled.button`
-width : 100px ;
-`
 
 
-
-export default Navb
+export default Navbar;

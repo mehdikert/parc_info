@@ -10,6 +10,9 @@ const sequelize = new Sequelize(
 )
 
 module.exports = sequelize
+
+
+
 // const dbConnection = mysql.createConnection({
 //     host: "localhost",
 //     user: "root",

@@ -8,17 +8,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { HomeIcon, SettingsIcon, UserIcon } from 'evergreen-ui';
+import { ChartIcon, HomeIcon, SettingsIcon, UserIcon } from 'evergreen-ui';
 import { Link } from 'react-router-dom';
 import styled from "styled-components"
 import DevicesSharpIcon from '@mui/icons-material/DevicesSharp';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
-import BarChartIcon from '@mui/icons-material/BarChart';
 import PersonIcon from '@mui/icons-material/Person';
-import BartChartIcon from "@mui/icons-material/BarChart";
-import GridViewIcon from "@mui/icons-material/GridView";
 
 
 export default function TemporaryDrawer() {
@@ -38,6 +33,14 @@ export default function TemporaryDrawer() {
 
             {/*Devider*/}<Divider /> {/*Devider*/}
             <List>
+                <Link to="/dashboard" style={drawerLinkStyle}>
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon><ChartIcon /></ListItemIcon>
+                            <ListItemText primary={"Dashboard"} ></ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+                </Link>
                 <Link to="/users" style={drawerLinkStyle}>
                     <ListItem disablePadding>
                         <ListItemButton>
@@ -46,7 +49,7 @@ export default function TemporaryDrawer() {
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Link to="/products" style={drawerLinkStyle}>
+                <Link to="/materiels" style={drawerLinkStyle}>
                     <ListItem disablePadding>
                         <ListItemButton>
                             <ListItemIcon><DevicesSharpIcon /></ListItemIcon>
@@ -54,19 +57,11 @@ export default function TemporaryDrawer() {
                         </ListItemButton>
                     </ListItem>
                 </Link>
-                <Link to="/four" style={drawerLinkStyle}>
+                <Link to="/fournisseurs" style={drawerLinkStyle}>
                     <ListItem disablePadding>
                         <ListItemButton>
                             <ListItemIcon><AccessibilityIcon /></ListItemIcon>
                             <ListItemText primary={"Fournisseurs"} ></ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                </Link>
-                <Link to="/404" style={drawerLinkStyle}>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon><MailIcon /></ListItemIcon>
-                            <ListItemText primary={"Requests"} ></ListItemText>
                         </ListItemButton>
                     </ListItem>
                 </Link>

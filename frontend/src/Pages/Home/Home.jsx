@@ -22,7 +22,6 @@ function Home() {
                 </div>
                 <div>
                     <Link onMouseOver={() => { setHoverLogin(true) }} onMouseOut={() => { setHoverLogin(false) }} className='link-home' to='/login'><img width={"30px"} src={hoverLogin === false ? register : registerGif} className='icon-gif' /> Login</Link>
-                    <Link onMouseOver={() => setHoverRegister(true)} onMouseOut={() => { setHoverRegister(false) }} className='link-home' to='/register'><img width={"30px"} src={hoverRegister === false ? login : loginGif} className='icon-gif' /> Register</Link>
                 </div>
             </div>
         </Container >

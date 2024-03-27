@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import './users.scss';
 import styled from "styled-components";
-import Navb from '../../Components/Navbar';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Tab from '../../Components/Tab';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../Components/Navbar';
+
 function Users() {
     const navigate = useNavigate()
     const [users, setUsers] = useState([]);
     const [columns, setColumns] = useState([])
-    const [fetchData, setFetchData] = useState(false)
-
+    const path = '/users'
 
     // generer les données
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get("http://localhost:3005/users");
+                const response = await axios.get(`http://localhost:3005${path}`);
                 setUsers(response.data);
                 if (response.data.length > 0) {
                     setColumns(Object.keys(response.data[0]))
@@ -26,22 +26,17 @@ function Users() {
                 toast.error(error.message);
             }
         };
-
-        const interval = setInterval(fetchUsers, 1000);
-
-        // Nettoyer l'intervalle lorsque le composant est démonté
-        return () => clearInterval(interval);
-
+        fetchUsers()
         return () => { };
     }, []);
 
     // verification token
     useEffect(() => {
-        if (localStorage.getItem('token') === "" || !localStorage.getItem('token')) {
-            navigate('/');
-            toast.error("Expired session");
+        const token = localStorage.getItem('token')
+        if (!token) {
+            return navigate('/')
         }
-        return () => { };
+
     }, []);
 
 
@@ -49,9 +44,9 @@ function Users() {
 
     return (
         <Container>
-            <Navb />
+            <Navbar />
             <Wrapper>
-                <Tab item={users} columns={columns} />
+                <Tab item={users} columns={columns} path={path} pk={"mat_util"} />
             </Wrapper>
         </Container >
     );

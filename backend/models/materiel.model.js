@@ -9,7 +9,7 @@ const materiel = sequelize.define(
             type: DataTypes.INTEGER(14),
             allowNull: false,
             primaryKey: true,
-            autoIncrement: false,
+            autoIncrement: true,
             comment: null,
             field: "num_serie"
         },
@@ -17,7 +17,7 @@ const materiel = sequelize.define(
             type: DataTypes.INTEGER(250),
             allowNull: false,
             primaryKey: false,
-            autoIncrement: true,
+            autoIncrement: false,
             comment: null,
             field: "code_immo"
         },
@@ -73,7 +73,7 @@ const materiel = sequelize.define(
             primaryKey: false,
             autoIncrement: false,
             comment: null,
-            field: "code_reform"
+            field: "matricule"
         }
     },
     {

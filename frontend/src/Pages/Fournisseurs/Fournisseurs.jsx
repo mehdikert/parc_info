@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import './materiel.scss';
+import './fournisseur.scss';
 import styled from "styled-components";
+import Navb from '../../Components/Navbar';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Tab from '../../Components/Tab';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../../Components/Navbar';
-
-function Materiels() {
+function Fournisseurs() {
     const navigate = useNavigate()
     const [materiels, setMateriels] = useState([]);
     const [columns, setColumns] = useState([])
-    const path = '/materiels'
+    const path = '/fournisseurs'
 
 
     // generer les données
@@ -48,7 +48,7 @@ function Materiels() {
         <Container>
             <Navbar />
             <Wrapper>
-                <Tab item={materiels} columns={columns} path={path} pk={"num_serie"} />
+                <Tab item={materiels} columns={columns} path={path} pk={"id_four"} />
             </Wrapper>
         </Container >
     );
@@ -64,4 +64,4 @@ overflow-x: hidden;
 `;
 const Wrapper = styled.div`
 `
-export default Materiels;
+export default Fournisseurs;

@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 const utilisateurs = require('../models/user.model');
 const dotenv = require('dotenv').config()
 const sequelize = require('../utils/database')
-
-
+const seq = require('sequelize')
+const bcrypt = require('bcrypt')
 
 // login controller for authentification
 
@@ -15,12 +15,19 @@ const loginUser = async (req, res) => {
                 username: data.username
             }
         })
+
         if (user) {
+            const isPasswordValid = await bcrypt.compare(data.password, user.password)
+
+            if (!isPasswordValid) {
+                return res.status(400).json({ message: "Invalid password" })
+            }
+
             let token = jwt.sign({ userId: user.mat_util }, process.env.SECRETKEY)
             res.status(200).json({ token: token })
         }
         else {
-            res.status(404).json({ message: 'User not found' })
+            res.status(400).json({ message: 'User not found' })
         }
     } catch (error) {
         res.status(404).json({ message: error.message })

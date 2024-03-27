@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 const utilisateurs = require('../models/user.model');
 const sequelize = require('sequelize');
+
 const valid_token = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
@@ -11,6 +12,7 @@ const valid_token = (req, res, next) => {
         res.status(404).json({ message: error.message })
     }
 }
+
 
 
 const role_user = async (req, res, next) => {
@@ -23,6 +25,9 @@ const role_user = async (req, res, next) => {
         })
         if (!user) {
             return res.status(404).json({ message: "user not found" })
+        }
+        if (user.role !== 'admin') {
+            return res.status(403).json({ message: "acces non authorisé" })
         }
         next();
     } catch (error) {

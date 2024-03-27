@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
-import styled from 'styled-components'
-import Navbar from '../../Components/Navbar';
+import styled from 'styled-components';
 import { useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify';
 import { AddIcon, Button, EditIcon, TrashIcon } from 'evergreen-ui'
 import axios from "axios"
+import Navbar from '../../Components/Navbar';
 function Crud_User() {
     const [add, setAdd] = useState(true);
     const [update, setUpdate] = useState(false);

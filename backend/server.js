@@ -2,13 +2,14 @@ const express = require('express');
 const app = express();
 const cors = require('cors')
 const colors = require('colors')
-const user_router = require('./Routes/user.route')
-const mat_router = require('./Routes/materiel.route')
+const user_router = require('./Routes/user.routes')
+const mat_router = require('./Routes/materiel.routes')
 const auth_router = require('./Routes/auth.routes')
+const four_router = require('./Routes/fournisseur.routes')
 const http = require("http")
 
-const dotenv = require('dotenv').config()
-
+const dotenv = require('dotenv')
+dotenv.config()
 
 app.use(cors(
     {
@@ -17,10 +18,13 @@ app.use(cors(
         credentials: true
     }
 ))
+
+
 app.use(express.json())
 app.use('/users', user_router);
-app.use('/mat', mat_router);
+app.use('/materiels', mat_router);
 app.use('/auth', auth_router)
+app.use('/fournisseurs', four_router)
 
 
 const port = process.env.PORT;

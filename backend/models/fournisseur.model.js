@@ -5,19 +5,11 @@ const fournisseur = sequelize.define(
     'fournisseur',
     {
 
-        id_four: {
-            type: DataTypes.INTEGER(11),
+        nom_four: {
+            type: DataTypes.STRING(50),
             allowNull: false,
             primaryKey: true,
             autoIncrement: false,
-            comment: null,
-            field: "id_four"
-        },
-        nom_four: {
-            type: DataTypes.INTEGER(50),
-            allowNull: false,
-            primaryKey: false,
-            autoIncrement: true,
             comment: null,
             field: "nom_four"
         },

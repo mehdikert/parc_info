@@ -179,6 +179,15 @@ const utilisateur = sequelize.define(
             autoIncrement: false,
             comment: null,
             field: "username"
+        },
+        role: {
+            type: DataTypes.STRING(5),
+            allowNull: false,
+            defaultValue: 'user',
+            primaryKey: false,
+            autoIncrement: false,
+            comment: null,
+            field: "role"
         }
     }
     , {
