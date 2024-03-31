@@ -1,4 +1,4 @@
-const utilisateurs = require('../models/user.model')
+const { Utilisateur } = require('../models/models')
 const bcrypt = require('bcrypt')
 const sequelize = require('../utils/database')
 const seq = require('sequelize')
@@ -8,9 +8,13 @@ const seq = require('sequelize')
 const addUser = async (req, res) => {
     const data = req.body;
     try {
-        const hash = await bcrypt.hash(data.password, 10);
-        data.password = hash;
-        const newUser = await utilisateurs.create(data)
+        const findUser = Utilisateur.findOne({ where: { username: data.username } })
+        if (findUser) {
+            return res.status(404).json({ message: "User already exist" })
+        }
+        const hash = await bcrypt.hash(data.password_util, 10);
+        data.password_util = hash;
+        const newUser = await Utilisateur.create(data)
         newUser.password = hash;
         res.status(200).json({ newUser });
     } catch (error) {
@@ -22,7 +26,7 @@ const addUser = async (req, res) => {
 // get users  
 const getUsers = async (req, res) => {
     try {
-        const users = await utilisateurs.findAll();
+        const users = await Utilisateur.findAll();
         res.json(users);
     } catch (error) {
         res.status(404).send({
@@ -36,9 +40,9 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
     const index = req.params.id
     try {
-        const user = await utilisateurs.findOne({
+        const user = await Utilisateur.findOne({
             where: {
-                mat_util: index
+                id_util: index
             }
         });
         if (!user) {
@@ -85,13 +89,14 @@ const filtred_user = async (req, res, key) => {
 }
 */
 
+
 // delete user
 const deleteUser = async (req, res) => {
     const index = req.params.id
     try {
-        const user = await utilisateurs.findOne({
+        const user = await Utilisateur.findOne({
             where: {
-                mat_util: index
+                id_util: index
             }
         });
         if (!user) {
@@ -100,7 +105,7 @@ const deleteUser = async (req, res) => {
         else {
             const deleteUser = await utilisateurs.destroy({
                 where: {
-                    mat_util: index
+                    id_util: index
                 }
             })
             if (deleteUser) {
@@ -115,69 +120,90 @@ const deleteUser = async (req, res) => {
     }
 }
 
-
 const deleteUsers = async (req, res) => {
     const indexes = req.body.indexes; // Assurez-vous que req.body.indexes contient un tableau d'index d'utilisateurs à supprimer
+
     try {
         const deletedUsers = await Promise.all(indexes.map(async (index) => {
-            const user = await utilisateurs.findOne({
+            const user = await Utilisateur.findOne({
                 where: {
-                    mat_util: index
+                    id_util: index
                 }
             });
             if (!user) {
                 return { index, success: false, message: "User doesn't exist" };
             } else {
-                const deletedUser = await utilisateurs.destroy({
+                const deletedUser = await Utilisateur.destroy({
                     where: {
-                        mat_util: index
+                        id_util: index
                     }
                 });
                 if (deletedUser) {
                     return { index, success: true, message: 'User deleted' };
-                } else {
-                    return { index, success: false, message: 'Failed to delete user' };
                 }
             }
         }));
 
-        res.status(200).json(deletedUsers);
+        // Envoyer une seule réponse avec tous les résultats de suppression
+        res.status(200).json({ message: "success" });
     } catch (error) {
-        res.status(500).send({
+        res.status(500).json({
             success: false,
             message: error.message
         });
     }
 };
+
+
 // update user   
 const updateUser = async (req, res) => {
-    const id = req.params.id
+    const id = req.params.id; // Utilisez req.params.id pour récupérer l'identifiant de l'utilisateur
     try {
         const data = req.body;
-        bcrypt.hash(req.body.password, 10).then(async (hash) => {
-            req.body.password = hash;
-            try {
+        // Vérifier si le mot de passe est fourni avant de le hacher
+        if (req.body.password_util) {
+            bcrypt.hash(req.body.password_util, 10).then(async (hash) => {
+                req.body.password_util = hash;
+                try {
+                    const user = await Utilisateur.findByPk(id); // Utilisez id au lieu de id_util
+                    if (!user) {
+                        return res.status(200).json({ message: "user not found" })
+                    }
 
-                const user = await utilisateurs.findByPk(id);
+                    await Utilisateur.update(data, {
+                        where: {
+                            id_util: id
+                        }
+                    });
+                    res.status(200).json({ message: 'user updated' })
+                } catch (error) {
+                    res.status(404).send({
+                        success: false,
+                        message: error.message
+                    })
+                }
+            });
+        } else {
+            // Si le mot de passe n'est pas fourni, mettre à jour directement les autres données de l'utilisateur
+            try {
+                const user = await Utilisateur.findByPk(id); // Utilisez id au lieu de id_util
                 if (!user) {
-                    return res.status(200).json({ meessage: "user not found" })
+                    return res.status(200).json({ message: "user not found" })
                 }
 
-                await utilisateurs.update(data, {
+                await Utilisateur.update(data, {
                     where: {
-                        mat_util: id
+                        id_util: id
                     }
                 });
                 res.status(200).json({ message: 'user updated' })
             } catch (error) {
-
                 res.status(404).send({
                     success: false,
                     message: error.message
                 })
             }
-        })
-
+        }
     } catch (error) {
         res.status(404).send({
             success: false,
@@ -185,5 +211,7 @@ const updateUser = async (req, res) => {
         })
     }
 }
+
+
 
 module.exports = { addUser, getUsers, getUser, deleteUser, updateUser, deleteUsers }

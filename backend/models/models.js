@@ -1,5 +1,4 @@
-const sequelize = require('./db');
-
+const sequelize = require('../utils/database');
 const { DataTypes } = require('sequelize');
 
 const Fournisseur = sequelize.define('fournisseur', {
@@ -12,6 +11,7 @@ const Fournisseur = sequelize.define('fournisseur', {
     nom_four: {
         type: DataTypes.STRING(50),
         allowNull: false,
+        unique: true,
         field: "nom_four"
     },
     adresse_four: {
@@ -24,6 +24,9 @@ const Fournisseur = sequelize.define('fournisseur', {
         allowNull: false,
         field: 'tel_four'
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const BL = sequelize.define('bl', {
@@ -42,6 +45,9 @@ const BL = sequelize.define('bl', {
         type: DataTypes.STRING(255),
         field: "details_livraison"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const BS = sequelize.define('bs', {
@@ -60,6 +66,9 @@ const BS = sequelize.define('bs', {
         type: DataTypes.STRING(255),
         field: "details_sortie"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const BE = sequelize.define('be', {
@@ -82,6 +91,9 @@ const BE = sequelize.define('be', {
         type: DataTypes.INTEGER,
         field: "code_seaal"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const Reparation = sequelize.define('reparation', {
@@ -106,6 +118,9 @@ const Reparation = sequelize.define('reparation', {
         type: DataTypes.STRING(255),
         field: "desc_rep"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const Piece = sequelize.define('piece', {
@@ -129,6 +144,9 @@ const Piece = sequelize.define('piece', {
         defaultValue: 0,
         field: "pu"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const RepPiece = sequelize.define('rep_piece', {
@@ -153,31 +171,11 @@ const RepPiece = sequelize.define('rep_piece', {
         defaultValue: 0,
         field: "prix_rep"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
-const Equipement = sequelize.define('equipement', {
-    id_equip: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        field: "id_equip"
-    },
-    design_equip: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-        field: "design_equip"
-    },
-    num_serie: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-        field: "num_serie"
-    },
-    prix_equip: {
-        type: DataTypes.DECIMAL(10, 2),
-        defaultValue: 0,
-        field: "prix_equip"
-    }
-});
 
 const Inventaire = sequelize.define('inventaire', {
     id_inv: {
@@ -196,6 +194,9 @@ const Inventaire = sequelize.define('inventaire', {
         defaultValue: 0,
         field: "qte_inv"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const InvMat = sequelize.define('inv_mat', {
@@ -219,6 +220,9 @@ const InvMat = sequelize.define('inv_mat', {
             key: 'code_seaal'
         }
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const Modele = sequelize.define('modele', {
@@ -233,6 +237,9 @@ const Modele = sequelize.define('modele', {
         allowNull: false,
         field: "design_modele"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const Marque = sequelize.define('marque', {
@@ -247,6 +254,9 @@ const Marque = sequelize.define('marque', {
         allowNull: false,
         field: "design_marque"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const Decharge = sequelize.define('decharge', {
@@ -261,6 +271,9 @@ const Decharge = sequelize.define('decharge', {
         allowNull: false,
         field: "date_dech"
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const Utilisateur = sequelize.define("utilisateur", {
@@ -330,8 +343,10 @@ const Utilisateur = sequelize.define("utilisateur", {
         allowNull: false,
         field: "username"
     }
-}
-);
+}, {
+    timestamps: false,
+    freezeTableName: true,
+});
 
 const FicheAffectation = sequelize.define('fiche_affectation', {
     id_aff: {
@@ -347,6 +362,9 @@ const FicheAffectation = sequelize.define('fiche_affectation', {
         type: DataTypes.DATE,
         allowNull: false
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const DemRef = sequelize.define('dem_ref', {
@@ -363,6 +381,9 @@ const DemRef = sequelize.define('dem_ref', {
         type: DataTypes.STRING(225),
         allowNull: false
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const PVRef = sequelize.define('pv_ref', {
@@ -379,24 +400,32 @@ const PVRef = sequelize.define('pv_ref', {
         type: DataTypes.STRING(255),
         allowNull: false
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 const Materiel = sequelize.define('materiel', {
     code_seaal: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        field: "code_seaal"
     },
     design_mat: {
-        type: DataTypes.STRING(50)
+        type: DataTypes.STRING(50),
+        field: "design_mat"
     },
     desc_mat: {
-        type: DataTypes.STRING(255)
+        type: DataTypes.STRING(255),
+        field: "desc_mat"
     },
     etat_mat: {
-        type: DataTypes.STRING(12)
+        type: DataTypes.STRING(12),
+        field: "etat_mat"
     },
     id_mar: {
         type: DataTypes.INTEGER,
+        field: "id_mar",
         references: {
             model: 'marque',
             key: 'id_mar'
@@ -404,6 +433,7 @@ const Materiel = sequelize.define('materiel', {
     },
     id_mod: {
         type: DataTypes.INTEGER,
+        field: "id_mod",
         references: {
             model: 'modele',
             key: 'id_mod'
@@ -411,11 +441,15 @@ const Materiel = sequelize.define('materiel', {
     },
     id_equip: {
         type: DataTypes.INTEGER,
+        field: "id_equip",
         references: {
             model: 'equipement',
             key: 'id_equip'
         }
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 
@@ -436,6 +470,9 @@ const DechargeMat = sequelize.define('decharge_mat', {
             key: 'id_dech'
         }
     }
+}, {
+    timestamps: false,
+    freezeTableName: true,
 });
 
 module.exports = {
@@ -446,7 +483,6 @@ module.exports = {
     Reparation,
     Piece,
     RepPiece,
-    Equipement,
     Inventaire,
     InvMat,
     Modele,
@@ -459,3 +495,4 @@ module.exports = {
     Materiel,
     DechargeMat
 };
+

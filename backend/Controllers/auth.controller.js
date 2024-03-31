@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const utilisateurs = require('../models/user.model');
+const { Utilisateur } = require('../models/models');
 const dotenv = require('dotenv').config()
 const sequelize = require('../utils/database')
 const seq = require('sequelize')
@@ -10,20 +10,20 @@ const bcrypt = require('bcrypt')
 const loginUser = async (req, res) => {
     const data = req.body;
     try {
-        const user = await utilisateurs.findOne({
+        const user = await Utilisateur.findOne({
             where: {
                 username: data.username
             }
         })
 
         if (user) {
-            const isPasswordValid = await bcrypt.compare(data.password, user.password)
+            const isPasswordValid = await bcrypt.compare(data.password_util, user.password_util)
 
             if (!isPasswordValid) {
                 return res.status(400).json({ message: "Invalid password" })
             }
 
-            let token = jwt.sign({ userId: user.mat_util }, process.env.SECRETKEY)
+            let token = jwt.sign({ id_util: user.id_util }, process.env.SECRETKEY)
             res.status(200).json({ token: token })
         }
         else {

@@ -1,4 +1,4 @@
-const fourni = require('../models/fournisseur.model')
+const { Fournisseur } = require('../models/models')
 const bcrypt = require('bcrypt')
 const sequelize = require('../utils/database')
 const seq = require('sequelize')
@@ -8,11 +8,18 @@ const seq = require('sequelize')
 const addFour = async (req, res) => {
     const data = req.body;
     try {
-        const newFour = await fourni.create(data)
+        const exist = await Fournisseur.findOne({
+            where: {
+                nom_four: data.nom_four
+            }
+        })
+        if (exist) {
+            return res.status(404).json({ message: "Fournisseur déjà existant" })
+        }
+        const newFour = await Fournisseur.create(data); // Correction ici
         res.status(200).json({ newFour });
-
     } catch (error) {
-        console.error("Error adding fournisseur :", error);
+        console.error("Erreur lors de l'ajout du fournisseur :", error);
         res.status(500).send({ success: false, message: error.message });
     }
 }
@@ -20,27 +27,22 @@ const addFour = async (req, res) => {
 // get users  
 const getFours = async (req, res) => {
     try {
-        const four = await fourni.findAll()
-        if (!four) {
-            res.status(400).json({ message: 'Fournisseurs Not found' })
+        const fournisseurs = await Fournisseur.findAll(); // Utilisation correcte du modèle Fournisseur
+        if (!fournisseurs || fournisseurs.length === 0) {
+            return res.status(404).json({ message: 'Aucun fournisseur trouvé' }); // Correction du statut de réponse
         }
-        res.status(200).json(four);
-
+        res.status(200).json(fournisseurs);
     } catch (error) {
-        res.status(404).send({
-            success: false,
-            message: error.message
-        })
+        res.status(500).json({ success: false, message: error.message }); // Correction du statut de réponse
     }
 }
-
 // get user  
 const getFour = async (req, res) => {
     const index = req.params.id
     try {
-        const four = await fourni.findOne({
+        const four = await Fournisseur.findOne({
             where: {
-                nom_four: index
+                id_four: index
             }
         });
         if (!four) {
@@ -87,29 +89,27 @@ const filtred_user = async (req, res, key) => {
 }
 */
 
-
-
 const deleteFours = async (req, res) => {
     const indexes = req.body.indexes; // Assurez-vous que req.body.indexes contient un tableau d'index d'utilisateurs à supprimer
     try {
         const deletedFours = await Promise.all(indexes.map(async (index) => {
-            const four = await fourni.findOne({
+            const four = await Fournisseur.findOne({
                 where: {
-                    nom_four: index
+                    id_four: index
                 }
             });
             if (!four) {
-                return { index, success: false, message: index + " doesn't exist" };
+                return { index, success: false, message: "Fournisseur(s) doesn't exist" };
             } else {
-                const deletedFour = await fourni.destroy({
+                const deletedFour = await Fournisseur.destroy({
                     where: {
-                        nom_four: index
+                        id_four: index
                     }
                 });
                 if (deletedFour) {
-                    return { index, success: true, message: index + ' deleted' };
+                    return { index, success: true, message: 'Fournisseur(s) deleted' };
                 } else {
-                    return { index, success: false, message: 'Failed to delete fournisseur' };
+                    return { index, success: false, message: 'Failed to delete Fournisseur(s)' };
                 }
             }
         }));
@@ -123,24 +123,25 @@ const deleteFours = async (req, res) => {
         });
     }
 };
+
 // update user   
 const updateFour = async (req, res) => {
     const id = req.params.id
     const data = req.body
     try {
 
-        const four = await fourni.findByPk(id);
+        const four = await Fournisseur.findByPk(id);
         if (!four) {
             return res.status(200).json({ message: "Fournisseur not found" })
         }
 
-        await fourni.update(data, {
+        await Fournisseur.update(data, {
             where: {
-                nom_four: id
+                id_four: id
             }
         });
 
-        res.status(200).json({ message: 'user updated' })
+        res.status(200).json({ message: 'Fournisseur updated' })
 
     } catch (error) {
         res.status(404).send({
@@ -149,5 +150,6 @@ const updateFour = async (req, res) => {
         })
     }
 }
+
 
 module.exports = { addFour, getFours, getFour, updateFour, deleteFours }

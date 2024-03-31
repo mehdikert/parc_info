@@ -1,0 +1,5 @@
+const { Materiel, Marque, Modele } = require('../models/models')
+const Equipement = require('../models/equipement.model')
+const bcrypt = require('bcrypt')
+const sequelize = require('../utils/database')
+const seq = require('sequelize')

@@ -6,7 +6,7 @@ const router = require('express').Router()
 
 router.get('/', getFours)
 router.get('/:id', getFour)
-router.delete('/', deleteFours)
+router.delete('/delete', deleteFours)
 router.post('/post', addFour)
 router.put('/update/:id', updateFour)
 

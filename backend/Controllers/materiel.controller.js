@@ -1,90 +1,89 @@
-const materiel = require('../models/materiel.model')
-
+const { Materiel, Marque, Modele } = require('../models/models')
+const Equipement = require('../models/equipement.model')
+const bcrypt = require('bcrypt')
 const sequelize = require('../utils/database')
 const seq = require('sequelize')
 
 
 const addMat = async (req, res) => {
-    const data = req.body
+    const data = req.body;
     try {
-        const newMat = await materiel.create(data)
-        res.status(200).json({ message: "New materiel added" });
-    } catch (error) {
-        res.status(400).send({
-            success: false,
-            message: error.message
-        })
-    }
-}
-
-
-const getMats = async (req, res) => {
-
-    try {
-        const data = await materiel.findAll();
-        if (!data) {
-            return res.status(400).json({ message: "materiel not found" })
+        // Vérifier si la marque existe
+        const marqueExist = await Marque.findByPk(data.id_mar);
+        if (!marqueExist) {
+            return res.status(404).json({ message: "La marque spécifiée n'existe pas." });
         }
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(404).send({
-            success: false,
-            message: error.message
+
+        // Vérifier si le modèle existe
+        const modeleExist = await Modele.findByPk(data.id_mod);
+        if (!modeleExist) {
+            return res.status(404).json({ message: "Le modèle spécifié n'existe pas." });
+        }
+
+        // Vérifier si l'equipement existe
+        const equipExist = await Equipement.findByPk(data.id_equip);
+        if (!equipExist) {
+            return res.status(404).json({ message: "L'equipement spécifié n'existe pas." });
+        }
+
+        // Ajouter le matériel
+        const verify = await Materiel.findOne({
+            where: {
+                code_seaal: data.code_seaal
+            }
         })
-        console.log(error);
+        if (verify) {
+            return res.status(404).json({ message: "Le matériel existe déjà." });
+        }
+
+        const newMat = await Materiel.create(data)
+        res.status(200).json({ success: true, materiel: newMat })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Une erreur serveur s'est produite." });
     }
-}
+};
+
 
 const getMat = async (req, res) => {
-    const id = req.params.id;
     try {
-        const data = await materiel.findOne({
-            where: {
-                num_serie: id
-            }
-        });
-        if (!data) {
-            return res.json({ message: "materiel not found" })
+        const mat = await Materiel.findAll()
+        if (!mat || mat.length === 0) {
+            return res.status(404).json({ message: "Aucun materiel trouver" })
         }
-        res.status(200).json(data);
+        res.status(200).json(mat)
     } catch (error) {
-        res.status(404).send({
-            success: false,
-            message: error.message
-        })
+        console.error(error)
+        throw error
     }
-}
+};
 
 
-
-const deleteMats = async (req, res) => {
-    const indexes = req.body.indexes; // Assurez-vous que req.body.indexes contient un tableau d'index d'utilisateurs à supprimer
+const deleteMat = async (req, res) => {
+    const indexes = req.body.indexes;
     try {
-        const deletedMateriels = await Promise.all(indexes.map(async (index) => {
-            const mat = await materiel.findOne({
+        const deletedMats = await Promise.all(indexes.map(async (index) => {
+            const mat = await Materiel.findOne({
                 where: {
-                    num_serie: index
+                    code_seaal: index
                 }
             });
             if (!mat) {
-                return { index, success: false, message: `Materiel ${index} not found` };
+                return { index, success: false, message: "Materiel(s) doesn't exist" };
             } else {
-                const deletedUser = await materiel.destroy({
+                const deletedMat = await Materiel.destroy({
                     where: {
-                        num_serie: index
+                        code_seaal: index
                     }
                 });
-                if (deletedUser) {
-                    return { index, success: true, message: 'Materiel deleted' };
+                if (deletedMat) {
+                    return { index, success: true, message: 'Materiel(s) deleted' };
                 } else {
-                    return { index, success: false, message: 'Failed to delete materiel' };
+                    return { index, success: false, message: 'Failed to delete Materiel(s)' };
                 }
             }
         }));
-
-        // Envoie de la réponse après avoir supprimé tous les matériels
-        res.status(200).json(deletedMateriels);
-
+        res.status(200).json(deletedMats);
     } catch (error) {
         res.status(500).send({
             success: false,
@@ -94,27 +93,28 @@ const deleteMats = async (req, res) => {
 };
 
 const updateMat = async (req, res) => {
-    const id = req.params.id
+    const id = req.params.id;
+    const data = req.body
     try {
-        const data = req.body;
-        const user = await materiel.findByPk(id);
-        if (!user) {
-            return res.status(200).json({ meessage: "user not found" })
+        const verify = await Materiel.findOne({
+            where: {
+                code_seaal: id
+            }
+        })
+        if (!verify) {
+            return res.status(404).json({ message: "Materiel not found" })
         }
 
-        await materiel.update(data, {
+        await Materiel.update(data, {
             where: {
-                num_serie: id
+                code_seaal: id
             }
-        });
-        res.status(200).json({ message: 'user updated' })
+        }).then(() => res.status(200).json({ message: "Materiel updated" }))
+
     } catch (error) {
-        res.status(404).send({
-            success: false,
-            message: error.message
-        })
+        console.error(error)
+        throw error
     }
-}
+};
 
-
-module.exports = { addMat, getMats, getMat, deleteMats, updateMat }
+module.exports = { addMat, getMat, deleteMat, updateMat }
