@@ -1,14 +1,15 @@
-const { getFours, getFour, deleteFours, addFour, updateFour } = require('../Controllers/fournisseur.controller')
+const { getFours, deleteFours, addFour, updateFour, getFourCol } = require('../Controllers/fournisseur.controller')
+const verifyToken = require('../Middlewares/verification.middleware')
 
 const router = require('express').Router()
 
 
 
-router.get('/', getFours)
-router.get('/:id', getFour)
-router.delete('/delete', deleteFours)
-router.post('/post', addFour)
-router.put('/update/:id', updateFour)
+router.get('/', verifyToken, getFours)
+router.get('/columns', verifyToken, getFourCol)
+router.delete('/delete', verifyToken, deleteFours)
+router.post('/post', verifyToken, addFour)
+router.put('/update/:id', verifyToken, updateFour)
 
 
 

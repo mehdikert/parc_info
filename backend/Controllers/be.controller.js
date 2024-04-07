@@ -1,7 +1,7 @@
 const { BE, Materiel } = require('../models/models')
 const bcrypt = require('bcrypt')
 const sequelize = require('../utils/database')
-const seq = require('sequelize')
+const { Op } = require('sequelize')
 
 
 // post
@@ -10,8 +10,7 @@ const addBe = async (req, res) => {
     try {
         const exist = await BE.findOne({
             where: {
-                [Op.and]: {
-                    id_be: data.id_be,
+                [Op.And]: {
                     date_entree: data.date_entree,
                     code_seaal: data.code_seaal
                 }
@@ -33,13 +32,10 @@ const addBe = async (req, res) => {
     }
 }
 
-// get users  
+// get 
 const getBe = async (req, res) => {
     try {
         const be = await BE.findAll(); // Utilisation correcte du modèle be
-        if (!be || be.length === 0) {
-            return res.status(404).json({ message: "Aucun Bon d'entrée trouvé" });
-        }
         res.status(200).json(be);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

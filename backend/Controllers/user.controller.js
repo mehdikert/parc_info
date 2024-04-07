@@ -8,7 +8,7 @@ const seq = require('sequelize')
 const addUser = async (req, res) => {
     const data = req.body;
     try {
-        const findUser = Utilisateur.findOne({ where: { username: data.username } })
+        const findUser = await Utilisateur.findOne({ where: { username: data.username } })
         if (findUser) {
             return res.status(404).json({ message: "User already exist" })
         }
@@ -36,58 +36,16 @@ const getUsers = async (req, res) => {
     }
 }
 
-// get user  
-const getUser = async (req, res) => {
-    const index = req.params.id
+const getUserCol = async (req, res) => {
     try {
-        const user = await Utilisateur.findOne({
-            where: {
-                id_util: index
-            }
-        });
-        if (!user) {
-            res.status(200).json({ message: "User doesn't exist" })
-        }
-        res.status(200).json(user)
+        // Obtenir les informations sur les colonnes de la table Materiel
+        const columns = await Utilisateur.describe();
+        res.status(200).json(columns);
     } catch (error) {
-        res.status(404).send({
-            success: false,
-            message: error.message
-        })
+        console.error('Error fetching Materiel columns:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 }
-
-// filtred user 
-/*
-const filtred_user = async (req, res, key) => {
-    const key = req.body.filterKey
-    const { nom, prenom, direction, department, site, structure, wilaya, email, username } = req.body
-    try {
-        const filter = await utilisateurs.findAll({
-            where: {
-                [seq.or]:
-                    [
-                        { nom: { [seq.like]: `%${key}%` } },
-                        { prenom: { [seq.like]: `%${key}%` } },
-                        { direction: { [seq.like]: `%${key}%` } },
-                        { department: { [seq.like]: `%${key}%` } },
-                        { site: { [seq.like]: `%${key}%` } },
-                        { structure: { [seq.like]: `%${key}%` } },
-                        { wilaya: { [seq.like]: `%${key}%` } },
-                        { email: { [seq.like]: `%${key}%` } },
-                        { username: { [seq.like]: `%${key}%` } }
-                    ]
-            }
-        })
-        res.status(200).json(filter)
-    } catch (error) {
-        res.status(404).send({
-            success: false,
-            message: error.message
-        })
-    }
-}
-*/
 
 
 // delete user
@@ -214,4 +172,4 @@ const updateUser = async (req, res) => {
 
 
 
-module.exports = { addUser, getUsers, getUser, deleteUser, updateUser, deleteUsers }
+module.exports = { addUser, getUsers, getUserCol, deleteUser, updateUser, deleteUsers }

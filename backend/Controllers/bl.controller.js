@@ -36,10 +36,7 @@ const addBL = async (req, res) => {
 // get users  
 const getBL = async (req, res) => {
     try {
-        const bl = await BL.findAll(); // Utilisation correcte du modèle be
-        if (!bl || bl.length === 0) {
-            return res.status(404).json({ message: "Aucun Bon de livraison trouvé" });
-        }
+        const bl = await BL.findAll();
         res.status(200).json(bl);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

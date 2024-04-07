@@ -57,37 +57,17 @@ const getFour = async (req, res) => {
     }
 }
 
-// filtred user 
-/*
-const filtred_user = async (req, res, key) => {
-    const key = req.body.filterKey
-    const { nom, prenom, direction, department, site, structure, wilaya, email, username } = req.body
+const getFourCol = async (req, res) => {
     try {
-        const filter = await utilisateurs.findAll({
-            where: {
-                [seq.or]:
-                    [
-                        { nom: { [seq.like]: `%${key}%` } },
-                        { prenom: { [seq.like]: `%${key}%` } },
-                        { direction: { [seq.like]: `%${key}%` } },
-                        { department: { [seq.like]: `%${key}%` } },
-                        { site: { [seq.like]: `%${key}%` } },
-                        { structure: { [seq.like]: `%${key}%` } },
-                        { wilaya: { [seq.like]: `%${key}%` } },
-                        { email: { [seq.like]: `%${key}%` } },
-                        { username: { [seq.like]: `%${key}%` } }
-                    ]
-            }
-        })
-        res.status(200).json(filter)
+        // Obtenir les informations sur les colonnes de la table Materiel
+        const columns = await Fournisseur.describe();
+        res.status(200).json(columns);
     } catch (error) {
-        res.status(404).send({
-            success: false,
-            message: error.message
-        })
+        console.error('Error fetching Materiel columns:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 }
-*/
+
 
 const deleteFours = async (req, res) => {
     const indexes = req.body.indexes; // Assurez-vous que req.body.indexes contient un tableau d'index d'utilisateurs à supprimer
@@ -152,4 +132,4 @@ const updateFour = async (req, res) => {
 }
 
 
-module.exports = { addFour, getFours, getFour, updateFour, deleteFours }
+module.exports = { addFour, getFours, getFour, updateFour, deleteFours, getFourCol }

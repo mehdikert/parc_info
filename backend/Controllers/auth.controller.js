@@ -18,16 +18,15 @@ const loginUser = async (req, res) => {
 
         if (user) {
             const isPasswordValid = await bcrypt.compare(data.password_util, user.password_util)
-
             if (!isPasswordValid) {
                 return res.status(400).json({ message: "Invalid password" })
             }
 
             let token = jwt.sign({ id_util: user.id_util }, process.env.SECRETKEY)
-            res.status(200).json({ token: token })
+            res.status(200).json({ token: token, user: user })
         }
         else {
-            res.status(400).json({ message: 'User not found' })
+            res.status(400).json({ message: 'Invalid username' })
         }
     } catch (error) {
         res.status(404).json({ message: error.message })

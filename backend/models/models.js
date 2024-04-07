@@ -73,13 +73,13 @@ const BS = sequelize.define('bs', {
 
 const BE = sequelize.define('be', {
     id_be: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(11),
         primaryKey: true,
         autoIncrement: true,
         field: "id_be"
     },
     date_entree: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING(10),
         allowNull: false,
         field: "date_entree"
     },
@@ -153,24 +153,22 @@ const RepPiece = sequelize.define('rep_piece', {
     id_rep: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
-        field: "id_rep"
+        field: "id_rep",
+        references: {
+            model: "Reparation",
+            field: "id_rep"
+        }
     },
-    design_piece: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-        field: "design_piece"
-    },
-    num_serie: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-        field: "num_serie"
-    },
-    prix_rep: {
-        type: DataTypes.DECIMAL(10, 2),
-        defaultValue: 0,
-        field: "prix_rep"
+    id_piece: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        field: "id_piece",
+        references: {
+            model: "Piece",
+            field: "id_piece"
+        }
     }
+
 }, {
     timestamps: false,
     freezeTableName: true,
@@ -206,7 +204,7 @@ const InvMat = sequelize.define('inv_mat', {
         primaryKey: true,
         field: "id_inv",
         references: {
-            model: 'inventaire',
+            model: "Inventaire",
             key: 'id_inv'
         }
     },
@@ -216,7 +214,7 @@ const InvMat = sequelize.define('inv_mat', {
         primaryKey: true,
         field: "code_seaal",
         references: {
-            model: 'materiel',
+            model: "Materiel",
             key: 'code_seaal'
         }
     }
@@ -265,6 +263,22 @@ const Decharge = sequelize.define('decharge', {
         primaryKey: true,
         autoIncrement: true,
         field: "id_dech"
+    },
+    id_util: {
+        type: DataTypes.INTEGER,
+        field: "id_util",
+        references: {
+            model: "Utilisateur",
+            key: 'id_util'
+        }
+    },
+    id_struc: {
+        type: DataTypes.INTEGER,
+        field: "id_struc",
+        references: {
+            model: "Structure",
+            key: 'id_struc'
+        }
     },
     date_dech: {
         type: DataTypes.DATE,
@@ -380,6 +394,22 @@ const DemRef = sequelize.define('dem_ref', {
     motif_dem_ref: {
         type: DataTypes.STRING(225),
         allowNull: false
+    },
+    id_mat: {
+        type: DataTypes.INTEGER,
+        field: "id_mat",
+        references: {
+            model: "Materiel",
+            key: 'id_mat'
+        }
+    },
+    id_pv_ref: {
+        type: DataTypes.INTEGER,
+        field: "id_pv_ref",
+        references: {
+            model: "PVRef",
+            key: 'id_pv_ref'
+        }
     }
 }, {
     timestamps: false,
@@ -427,7 +457,7 @@ const Materiel = sequelize.define('materiel', {
         type: DataTypes.INTEGER,
         field: "id_mar",
         references: {
-            model: 'marque',
+            model: "Marque",
             key: 'id_mar'
         }
     },
@@ -435,7 +465,7 @@ const Materiel = sequelize.define('materiel', {
         type: DataTypes.INTEGER,
         field: "id_mod",
         references: {
-            model: 'modele',
+            model: "Modele",
             key: 'id_mod'
         }
     },
@@ -443,7 +473,7 @@ const Materiel = sequelize.define('materiel', {
         type: DataTypes.INTEGER,
         field: "id_equip",
         references: {
-            model: 'equipement',
+            model: "Equipement",
             key: 'id_equip'
         }
     }
@@ -458,7 +488,7 @@ const DechargeMat = sequelize.define('decharge_mat', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-            model: 'materiel',
+            model: "Materiel",
             key: 'code_seaal'
         }
     },
@@ -466,7 +496,7 @@ const DechargeMat = sequelize.define('decharge_mat', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-            model: 'decharge',
+            model: "Decharge",
             key: 'id_dech'
         }
     }
@@ -474,6 +504,41 @@ const DechargeMat = sequelize.define('decharge_mat', {
     timestamps: false,
     freezeTableName: true,
 });
+
+
+const Structure = sequelize.define('structure', {
+    id_struc: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        field: 'id_struc'
+    },
+    design_struc: {
+        type: DataTypes.TEXT(50),
+        primaryKey: false,
+        field: 'design_struc'
+    },
+    adresse_struc: {
+        type: DataTypes.TEXT(255),
+        primaryKey: false,
+        field: 'adresse_struc'
+    },
+    wilaya_struc: {
+        type: DataTypes.TEXT(100),
+        primaryKey: false,
+        field: 'wilaya_struc'
+    },
+    code_struc: {
+        type: DataTypes.TEXT(100),
+        primaryKey: false,
+        field: 'wilaya_struc'
+    }
+},
+
+    {
+        timestamps: false,
+        freezeTableName: true,
+    });
 
 module.exports = {
     Fournisseur,
@@ -493,6 +558,7 @@ module.exports = {
     DemRef,
     PVRef,
     Materiel,
-    DechargeMat
+    DechargeMat,
+    Structure
 };
 

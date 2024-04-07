@@ -24,61 +24,58 @@ const addBs = async (req, res) => {
             return res.status(404).json({ message: "Fournisseur n'existe pas" })
         }
 
-        const be_exist = await BE.findByPk(id_four);
-        if (!four_exist) {
-            return res.status(404).json({ message: "Fournisseur n'existe pas" })
+        const be_exist = await BE.findByPk(id_be);
+        if (!be_exist) {
+            return res.status(404).json({ message: "Bon d'entrée n'existe pas" })
         }
         if (exist) {
-            return res.status(404).json({ message: "Bon de livraison déjà existant" })
+            return res.status(404).json({ message: "Bon de sortie déjà existant" })
         }
-        const newBL = await BL.create(data); // Correction ici
-        res.status(200).json({ newBL });
+        const newBS = await BS.create(data); // Correction ici
+        res.status(200).json({ newBS });
     } catch (error) {
-        console.error("Erreur lors de l'ajout du bon d'entrée ", error);
+        console.error("Erreur lors de l'ajout du bon de sortie ", error);
         res.status(500).send({ success: false, message: error.message });
     }
 }
 
-// get users  
-const getBL = async (req, res) => {
+// get
+const getBs = async (req, res) => {
     try {
-        const bl = await BL.findAll(); // Utilisation correcte du modèle be
-        if (!bl || bl.length === 0) {
-            return res.status(404).json({ message: "Aucun Bon de livraison trouvé" });
-        }
-        res.status(200).json(bl);
+        const bs = await BS.findAll();
+        res.status(200).json(bs);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 }
 
-
-const deleteBL = async (req, res) => {
+// delete
+const deleteBs = async (req, res) => {
     const indexes = req.body.indexes; // Assurez-vous que req.body.indexes contient un tableau d'index d'utilisateurs à supprimer
     try {
-        const delete_all_BL = await Promise.all(indexes.map(async (index) => {
-            const bl = await BL.findOne({
+        const delete_all_Bs = await Promise.all(indexes.map(async (index) => {
+            const bs = await BS.findOne({
                 where: {
-                    id_bl: index
+                    id_bs: index
                 }
             });
-            if (!bl) {
-                return { index, success: false, message: "Bon de livraison doesn't exist" };
+            if (!bs) {
+                return { index, success: false, message: "Bon de sortie doesn't exist" };
             } else {
-                const deletedBL = await BL.destroy({
+                const deletedBs = await BS.destroy({
                     where: {
-                        id_bl: index
+                        id_bs: index
                     }
                 });
-                if (deletedBL) {
-                    return { index, success: true, message: 'Bon de livraison deleted' };
+                if (deletedBs) {
+                    return { index, success: true, message: 'Bon de sortie deleted' };
                 } else {
-                    return { index, success: false, message: 'Failed to delete Bon de livraion' };
+                    return { index, success: false, message: 'Failed to delete Bon de sortie' };
                 }
             }
         }));
 
-        res.status(200).json(delete_all_BL);
+        res.status(200).json(delete_all_Bs);
 
     } catch (error) {
         res.status(500).send({
@@ -88,30 +85,29 @@ const deleteBL = async (req, res) => {
     }
 };
 
-// update user   
-const updateBL = async (req, res) => {
+// update 
+const updateBs = async (req, res) => {
     const id = req.params.id
     const data = req.body
+
     try {
-
-        const bl = await BL.findByPk(id);
-        if (!bl) {
-            return res.status(200).json({ message: "Bon de livraison not found" })
-        }
-
-        const four_exist = await Fournisseur.findByPk(req.body.id_four);
-
+        const four_exist = await Fournisseur.findByPk(id_four);
         if (!four_exist) {
             return res.status(404).json({ message: "Fournisseur n'existe pas" })
         }
 
-        await BL.update(data, {
+        const be_exist = await BE.findByPk(id_be);
+        if (!be_exist) {
+            return res.status(404).json({ message: "Bon d'entrée n'existe pas" })
+        }
+
+        await BS.update(data, {
             where: {
-                id_bl: id
+                id_bs: id
             }
         });
 
-        res.status(200).json({ message: 'Bon de livraison updated' })
+        res.status(200).json({ message: 'Bon de sortie updated' })
 
     } catch (error) {
         res.status(404).send({
@@ -122,4 +118,4 @@ const updateBL = async (req, res) => {
 }
 
 
-module.exports = { addBL, getBL, updateBL, deleteBL }
+module.exports = { addBs, getBs, updateBs, deleteBs }

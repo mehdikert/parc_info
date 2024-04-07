@@ -44,13 +44,20 @@ const addMat = async (req, res) => {
     }
 };
 
+const getMatCol = async (req, res) => {
+    try {
+        // Obtenir les informations sur les colonnes de la table Materiel
+        const columns = await Materiel.describe();
+        res.status(200).json(columns);
+    } catch (error) {
+        console.error('Error fetching Materiel columns:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
 const getMat = async (req, res) => {
     try {
         const mat = await Materiel.findAll()
-        if (!mat || mat.length === 0) {
-            return res.status(404).json({ message: "Aucun materiel trouver" })
-        }
         res.status(200).json(mat)
     } catch (error) {
         console.error(error)
@@ -117,4 +124,4 @@ const updateMat = async (req, res) => {
     }
 };
 
-module.exports = { addMat, getMat, deleteMat, updateMat }
+module.exports = { addMat, getMat, deleteMat, updateMat, getMatCol }
